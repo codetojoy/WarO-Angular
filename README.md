@@ -9,3 +9,10 @@ ng serve
 npm install --save bootstrap@3
     - edit angular.json and add `node_modules/bootstrap/dist/css/bootstrap.css`
 ```
+
+### TODO
+
+* tests
+* style
+* revisit architecture / code seams
+* revisit loop idioms etc with functional style

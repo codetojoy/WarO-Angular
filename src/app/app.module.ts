@@ -9,11 +9,13 @@ import { PlayerComponent } from "./player/player.component";
 import { PlayersComponent } from "./players/players.component";
 
 import { ConfigService } from "./service/config.service";
+import { DealerService } from "./service/dealer.service";
+import { StrategyService } from "./service/strategy.service";
 
 @NgModule({
   declarations: [AppComponent, ControlpanelComponent, GameComponent, PlayerComponent, PlayersComponent],
   imports: [BrowserModule, AppRoutingModule],
-  providers: [ConfigService],
+  providers: [ConfigService, DealerService, StrategyService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
