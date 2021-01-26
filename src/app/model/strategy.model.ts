@@ -6,6 +6,6 @@ export interface Strategy {
 
 export class NextCard implements Strategy {
   select(prizeCard: Card, hand: Hand, maxCard: number): Card {
-    return null;
+    return hand.getCards()[0];
   }
 }

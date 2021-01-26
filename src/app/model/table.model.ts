@@ -1,4 +1,4 @@
-import { Hand } from "./hand.model";
+import { Card, Hand } from "./hand.model";
 
 import { Kitty } from "./hand.model";
 import { Player } from "./player.model";
@@ -8,6 +8,7 @@ export class Table {
   transparencyMode: boolean = false;
   kitty: Kitty = new Hand();
   players: Player[] = [];
+  prizeCard: Card;
 
   constructor(kitty?: Kitty, players?: Player[]) {
     if (kitty) {
@@ -16,6 +17,16 @@ export class Table {
     if (players) {
       this.players = players;
     }
+  }
+
+  assignPrizeCard(): void {
+    this.prizeCard = this.kitty.getCards()[0];
+    this.kitty.removeCard(this.prizeCard);
+    console.log(`TRACER Table aPC ${this.kitty.toString()}`);
+  }
+
+  getPrizeCard(): Card {
+    return this.prizeCard;
   }
 
   setTransparencyMode(transparencyMode: boolean) {
@@ -39,7 +50,6 @@ export class Table {
     }
     return result;
   }
-  */
 
   getPrizeCard(): number {
     let result: number = 0;
@@ -48,6 +58,7 @@ export class Table {
     }
     return result;
   }
+  */
 
   getStatus(): string {
     return this.status;

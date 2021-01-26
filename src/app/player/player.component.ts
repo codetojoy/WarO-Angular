@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { Player } from "../model/player.model";
 import { Card } from "../model/hand.model";
 
-import { ConfigService } from "../service/config.service";
+import { DealerService } from "../service/dealer.service";
 
 @Component({
   selector: "app-player",
@@ -12,11 +12,12 @@ import { ConfigService } from "../service/config.service";
 export class PlayerComponent implements OnInit {
   @Input() player: Player;
 
-  constructor(private configService: ConfigService) {}
+  constructor(private dealerService: DealerService) {}
 
   ngOnInit(): void {}
 
   onPlayRound(card: Card): void {
     console.log(`TRACER PC.playRound card: ${card.toString()}`);
+    this.dealerService.playRound(card);
   }
 }

@@ -5,7 +5,7 @@ import { ConfigService } from "./config.service";
 import { Deck } from "../model/deck.model";
 import { Card, Hand, Kitty } from "../model/hand.model";
 import { Table } from "../model/table.model";
-import { Player } from "../model/player.model";
+import { Bid, Player, Players } from "../model/player.model";
 
 @Injectable()
 export class DealerService {
@@ -16,7 +16,7 @@ export class DealerService {
     this.configService.transparencyModeChanged.subscribe((value) => {
       this.table.setTransparencyMode(value);
       // fire event with table ????
-      console.log(`TRACER DealerService transparency changed`);
+      console.log(`TRACER `);
       this.tableChanged.emit(this.table);
     });
   }
@@ -33,6 +33,7 @@ export class DealerService {
     hands.forEach((hand) => console.log(`TRACER hand: ${hand.toString()}`));
 
     this.table = this.assignToTable(hands, this.configService.getPlayers());
+    this.table.assignPrizeCard();
     // fire event with table ????
     console.log(`TRACER TODO fire event with table ${this.table.toString()}`);
     this.tableChanged.emit(this.table);
@@ -54,17 +55,65 @@ export class DealerService {
     return table;
   }
 
+  // TODO: test
   dealHands(cards: Card[], numCardsInHand: number): Hand[] {
     let hands: Hand[] = [];
 
-    let i: number, j: number;
-
-    for (i = 0, j = cards.length; i < j; i += numCardsInHand) {
+    for (let i: number = 0, j: number = cards.length; i < j; i += numCardsInHand) {
       let cardsForHand: Card[] = cards.slice(i, i + numCardsInHand);
       let hand: Hand = new Hand(cardsForHand);
       hands.push(hand);
     }
 
     return hands;
+  }
+
+  playRound(userCard: Card) {
+    let user: Player = new Players().findUser(this.table.players);
+    let userBid: Bid = new Bid(user, userCard);
+    let bids: Bid[] = this.getBids(userBid);
+    let winningBid: Bid = this.findWinningBid(bids);
+    let winner: Player = winningBid.player;
+    this.awardPoints(this.table.prizeCard.value, bids, winner);
+    console.log(`TRACER ROUND ${winner.name} WINS prize: ${this.table.prizeCard.value}`);
+    this.tableChanged.emit(this.table);
+    /*
+    // apply bid to user
+    // get bids
+    // find winner
+    // award points
+    // fire event
+    this.tableChanged.emit(this.table);
+    */
+  }
+
+  awardPoints(prizeValue: number, bids: Bid[], winner: Player) {
+    bids.forEach((bid) => {
+      let player: Player = bid.player;
+      if (player.name === winner.name) {
+        player.getPlayerStats().addPoints(prizeValue);
+        player.getPlayerStats().incNumRoundsWon();
+      }
+    });
+  }
+
+  findWinningBid(bids: Bid[]): Bid {
+    return bids.reduce((acc, bid) => {
+      let result: Bid = bid;
+      if (acc && acc.card.value > bid.card.value) {
+        result = acc;
+      }
+      return result;
+    }, null);
+  }
+
+  getBids(userBid: Bid): Bid[] {
+    let bids: Bid[] = [];
+    bids.push(userBid);
+    this.table.players.forEach((player) => {
+      let bid: Bid = player.getBid(this.table.getPrizeCard(), this.configService.getMaxCard());
+      bids.push(bid);
+    });
+    return bids;
   }
 }

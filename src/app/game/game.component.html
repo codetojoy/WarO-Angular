@@ -4,7 +4,7 @@
   </div>
   <div class="row" *ngIf="table.doesHaveKitty()">
     <p>prize card:</p>
-    <button class="btn btn-warning" disabled>{{ table.getPrizeCard() }}</button>
+    <button class="btn btn-warning" disabled>{{ table.getPrizeCard().value }}</button>
   </div>
   <div class="row" *ngIf="table.doesHaveKitty()">
     <p>kitty:</p>

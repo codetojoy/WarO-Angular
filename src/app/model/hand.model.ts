@@ -29,6 +29,10 @@ export class Hand {
     }
   }
 
+  removeCard(card: Card) {
+    this.cards = this.cards.filter((c) => c.value !== card.value);
+  }
+
   isEmpty(): boolean {
     return !this.cards || this.cards.length == 0;
   }
