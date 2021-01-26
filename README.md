@@ -12,7 +12,8 @@ npm install --save bootstrap@3
 
 ### TODO
 
-* tests
-* style
+* X canary tests
+* proper tests
+* CSS treatment
 * revisit architecture / code seams
 * revisit loop idioms etc with functional style

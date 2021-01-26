@@ -1,16 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ConfigService } from "../service/config.service";
+import { DealerService } from "../service/dealer.service";
+import { StrategyService } from "../service/strategy.service";
 
-import { ControlpanelComponent } from './controlpanel.component';
+import { ControlpanelComponent } from "./controlpanel.component";
 
-describe('ControlpanelComponent', () => {
+describe("ControlpanelComponent", () => {
   let component: ControlpanelComponent;
   let fixture: ComponentFixture<ControlpanelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ControlpanelComponent ]
-    })
-    .compileComponents();
+      declarations: [ControlpanelComponent],
+      providers: [ConfigService, DealerService, StrategyService],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +22,7 @@ describe('ControlpanelComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
