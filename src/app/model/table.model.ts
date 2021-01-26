@@ -5,6 +5,7 @@ import { Player } from "./player.model";
 
 export class Table {
   status: string = "no status";
+  transparencyMode: boolean = false;
   kitty: Kitty = new Hand();
   players: Player[] = [];
 
@@ -19,11 +20,26 @@ export class Table {
 
   setTransparencyMode(transparencyMode: boolean) {
     this.players.forEach((player) => player.setIsTransparent(transparencyMode));
+    this.transparencyMode = transparencyMode;
+  }
+
+  getIsTransparent(): boolean {
+    return this.transparencyMode;
   }
 
   doesHaveKitty(): boolean {
     return this.kitty && !this.kitty.isEmpty();
   }
+
+  /*
+  getPrizeCardDisplay(): string {
+    let result: string = ".";
+    if (this.doesHaveKitty()) {
+      result = this.kitty.getCards()[0].getDisplay(this.transparencyMode);
+    }
+    return result;
+  }
+  */
 
   getPrizeCard(): number {
     let result: number = 0;

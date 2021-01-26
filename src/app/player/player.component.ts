@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Player } from "../model/player.model";
+import { Card } from "../model/hand.model";
 
 import { ConfigService } from "../service/config.service";
 
@@ -14,4 +15,8 @@ export class PlayerComponent implements OnInit {
   constructor(private configService: ConfigService) {}
 
   ngOnInit(): void {}
+
+  onPlayRound(card: Card): void {
+    console.log(`TRACER PC.playRound card: ${card.toString()}`);
+  }
 }
