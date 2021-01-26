@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Input, Component, OnInit } from "@angular/core";
 
 import { ConfigService } from "../service/config.service";
 import { Player } from "../model/player.model";
@@ -9,7 +9,7 @@ import { Player } from "../model/player.model";
   styleUrls: ["./players.component.css"],
 })
 export class PlayersComponent implements OnInit {
-  players: Player[] = [];
+  @Input() players: Player[] = [];
 
   constructor(private configService: ConfigService) {}
 

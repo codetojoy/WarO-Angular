@@ -5,16 +5,32 @@ export class Card {
     this.value = value;
   }
 
+  getDisplay(isTransparent?: boolean) {
+    let result = ".";
+
+    if (isTransparent) {
+      result = this.toString();
+    }
+
+    return result;
+  }
+
   toString(): string {
     return "" + this.value;
   }
 }
 
 export class Hand {
-  cards: Card[] = [];
+  private cards: Card[] = [];
 
-  constructor(cards: Card[]) {
-    this.cards = cards;
+  constructor(cards?: Card[]) {
+    if (cards) {
+      this.cards = cards;
+    }
+  }
+
+  isEmpty(): boolean {
+    return !this.cards || this.cards.length == 0;
   }
 
   getCards(): Card[] {

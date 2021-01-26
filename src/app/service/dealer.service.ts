@@ -1,4 +1,4 @@
-import { Injectable, ɵisDefaultChangeDetectionStrategy } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 
 import { ConfigService } from "./config.service";
 
@@ -9,7 +9,17 @@ import { Player } from "../model/player.model";
 
 @Injectable()
 export class DealerService {
-  constructor(private configService: ConfigService) {}
+  private table: Table;
+  tableChanged: EventEmitter<Table> = new EventEmitter<Table>();
+
+  constructor(private configService: ConfigService) {
+    this.configService.transparencyModeChanged.subscribe((value) => {
+      this.table.setTransparencyMode(value);
+      // fire event with table ????
+      console.log(`TRACER DealerService transparency changed`);
+      this.tableChanged.emit(this.table);
+    });
+  }
 
   newGame() {
     console.log(`TRACER DealerService newGame`);
@@ -22,9 +32,10 @@ export class DealerService {
     let hands: Hand[] = this.dealHands(deck.getCards(), numCardsInHand);
     hands.forEach((hand) => console.log(`TRACER hand: ${hand.toString()}`));
 
-    let table: Table = this.assignToTable(hands, this.configService.getPlayers());
+    this.table = this.assignToTable(hands, this.configService.getPlayers());
     // fire event with table ????
-    console.log(`TRACER TODO fire event with table ${table.toString()}`);
+    console.log(`TRACER TODO fire event with table ${this.table.toString()}`);
+    this.tableChanged.emit(this.table);
   }
 
   assignToTable(hands: Hand[], players: Player[]): Table {
