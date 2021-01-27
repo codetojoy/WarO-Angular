@@ -10,7 +10,7 @@ export class ConfigService {
   // events for DealerService because it isn't "need to know", whereas StrategyService is
   transparencyModeChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
   private isTransparentMode: boolean = false;
-  private numCards: number = 30;
+  private numCards: number = 15;
   private maxCard: number = this.numCards;
   private numCardsInHand: number = 0;
 

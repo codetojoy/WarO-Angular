@@ -94,4 +94,19 @@ export class Players {
   findUser(players: Player[]): Player {
     return players.find((player) => player.isInteractive);
   }
+
+  findGameWinner(players: Player[]): Player {
+    let max: number = 0;
+
+    let result: Player = players.reduce((leader, player) => {
+      let playerPoints: number = player.getPlayerStats().points;
+      if (playerPoints > max) {
+        max = playerPoints;
+        leader = player;
+      }
+      return leader;
+    }, null);
+
+    return result;
+  }
 }

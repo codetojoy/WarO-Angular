@@ -1,12 +1,12 @@
 <div class="container">
   <div class="row">
-    <p>status: {{ table.getStatus() }}</p>
+    <p>status: {{ status }}</p>
   </div>
-  <div class="row" *ngIf="table.doesHaveKitty()">
+  <div class="row" *ngIf="table.getIsInPlay()">
     <p>prize card:</p>
     <button class="btn btn-warning" disabled>{{ table.getPrizeCard().value }}</button>
   </div>
-  <div class="row" *ngIf="table.doesHaveKitty()">
+  <div class="row" *ngIf="table.getIsInPlay()">
     <p>kitty:</p>
     <button class="btn btn-warning" disabled *ngFor="let card of table.kitty.getCards()">
       {{ card.getDisplay(table.getIsTransparent()) }}

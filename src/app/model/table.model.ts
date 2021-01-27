@@ -4,7 +4,7 @@ import { Kitty } from "./hand.model";
 import { Player } from "./player.model";
 
 export class Table {
-  status: string = "no status";
+  isInPlay: boolean = false;
   transparencyMode: boolean = false;
   kitty: Kitty = new Hand();
   players: Player[] = [];
@@ -20,9 +20,9 @@ export class Table {
   }
 
   assignPrizeCard(): void {
+    this.isInPlay = true;
     this.prizeCard = this.kitty.getCards()[0];
     this.kitty.removeCard(this.prizeCard);
-    console.log(`TRACER Table aPC ${this.kitty.toString()}`);
   }
 
   getPrizeCard(): Card {
@@ -42,30 +42,8 @@ export class Table {
     return this.kitty && !this.kitty.isEmpty();
   }
 
-  /*
-  getPrizeCardDisplay(): string {
-    let result: string = ".";
-    if (this.doesHaveKitty()) {
-      result = this.kitty.getCards()[0].getDisplay(this.transparencyMode);
-    }
-    return result;
-  }
-
-  getPrizeCard(): number {
-    let result: number = 0;
-    if (this.doesHaveKitty()) {
-      result = this.kitty.getCards()[0].value;
-    }
-    return result;
-  }
-  */
-
-  getStatus(): string {
-    return this.status;
-  }
-
-  setStatus(status: string): void {
-    this.status = status;
+  getIsInPlay(): boolean {
+    return this.isInPlay;
   }
 
   toString(): string {

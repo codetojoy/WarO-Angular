@@ -11,6 +11,7 @@ import { Bid, Player, Players } from "../model/player.model";
 export class DealerService {
   private table: Table;
   tableChanged: EventEmitter<Table> = new EventEmitter<Table>();
+  statusChanged: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private configService: ConfigService) {
     this.configService.transparencyModeChanged.subscribe((value) => {
@@ -73,21 +74,23 @@ export class DealerService {
     let userBid: Bid = new Bid(user, userCard);
     let bids: Bid[] = this.getBids(userBid);
     let winningBid: Bid = this.findWinningBid(bids);
-    let winner: Player = winningBid.player;
-    this.awardPoints(this.table.prizeCard.value, bids, winner);
-    console.log(`TRACER ROUND ${winner.name} WINS prize: ${this.table.prizeCard.value}`);
+    let roundWinner: Player = winningBid.player;
+    this.setStatsForRound(this.table.prizeCard.value, bids, roundWinner);
+    // console.log(`TRACER ROUND ${winner.name} WINS prize: ${this.table.prizeCard.value}`);
+
+    if (this.table.kitty.isEmpty()) {
+      // TODO: determine game winner
+      let gameWinner: Player = new Players().findGameWinner(this.table.players);
+      this.statusChanged.emit(`Game winner: ${gameWinner.name}`);
+      // this.setStatsForGame();
+    } else {
+      this.statusChanged.emit(`Round winner: ${roundWinner.name}! (${this.table.prizeCard.value} points)`);
+      this.table.assignPrizeCard();
+    }
     this.tableChanged.emit(this.table);
-    /*
-    // apply bid to user
-    // get bids
-    // find winner
-    // award points
-    // fire event
-    this.tableChanged.emit(this.table);
-    */
   }
 
-  awardPoints(prizeValue: number, bids: Bid[], winner: Player) {
+  setStatsForRound(prizeValue: number, bids: Bid[], winner: Player) {
     bids.forEach((bid) => {
       let player: Player = bid.player;
       if (player.name === winner.name) {

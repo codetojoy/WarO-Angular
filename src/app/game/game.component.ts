@@ -9,12 +9,16 @@ import { DealerService } from "../service/dealer.service";
   styleUrls: ["./game.component.css"],
 })
 export class GameComponent implements OnInit {
+  status: string = "Click 'New Game' to begin";
   table: Table = new Table();
   constructor(private dealerService: DealerService) {}
 
   ngOnInit(): void {
     this.dealerService.tableChanged.subscribe((table) => {
       this.table = table;
+    });
+    this.dealerService.statusChanged.subscribe((status) => {
+      this.status = status;
     });
   }
 }
