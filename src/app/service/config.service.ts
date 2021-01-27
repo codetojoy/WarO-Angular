@@ -2,8 +2,8 @@ import { EventEmitter, Injectable } from "@angular/core";
 
 import { Player } from "../model/player.model";
 import { Strategy } from "../model/strategy.model";
-
 import { StrategyService } from "./strategy.service";
+import { Constants } from "../util/constants";
 
 @Injectable()
 export class ConfigService {
@@ -23,7 +23,7 @@ export class ConfigService {
 
   getPlayers(): Player[] {
     let players: Player[] = [];
-    let strategy: Strategy = this.strategyService.getStrategy("default");
+    let strategy: Strategy = this.strategyService.getStrategy(Constants.STRATEGY_NEXT);
     players.push(new Player("Beethoven", strategy));
     players.push(new Player("Chopin", strategy));
     players.push(new Player("Mozart", strategy));

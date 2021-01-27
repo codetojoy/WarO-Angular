@@ -72,7 +72,6 @@ export class DealerService {
     const winningBid: Bid = this.findWinningBid(bids);
     const roundWinner: Player = winningBid.player;
     this.setStatsForRound(this.table.prizeCard.value, bids, roundWinner);
-    // console.log(`TRACER ROUND ${winner.name} WINS prize: ${this.table.prizeCard.value}`);
 
     if (this.table.kitty.isEmpty()) {
       let gameWinner: Player = new Players().findGameWinner(this.table.players);

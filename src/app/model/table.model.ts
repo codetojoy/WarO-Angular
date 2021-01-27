@@ -38,9 +38,11 @@ export class Table {
     return this.transparencyMode;
   }
 
+  /*
   doesHaveKitty(): boolean {
     return this.kitty && !this.kitty.isEmpty();
   }
+  */
 
   getIsInPlay(): boolean {
     return this.isInPlay;
