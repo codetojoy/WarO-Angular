@@ -6,7 +6,7 @@ import { Deck } from "./deck.model";
 describe("Deck", () => {
   let deck: Deck;
   const NUM_CARDS: number = 10;
-  const NUM_MATCHES_THRESHOLD: number = 3;
+  const NUM_MATCHES_THRESHOLD: number = 5;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({}).compileComponents();

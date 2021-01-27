@@ -16,8 +16,6 @@ export class DealerService {
   constructor(private configService: ConfigService) {
     this.configService.transparencyModeChanged.subscribe((value) => {
       this.table.setTransparencyMode(value);
-      // fire event with table ????
-      console.log(`TRACER `);
       this.tableChanged.emit(this.table);
     });
   }
@@ -29,13 +27,11 @@ export class DealerService {
 
     let deck: Deck = new Deck(numCards);
     deck.shuffle();
-    // deck.emitLog();
     let hands: Hand[] = this.dealHands(deck.getCards(), numCardsInHand);
     hands.forEach((hand) => console.log(`TRACER hand: ${hand.toString()}`));
 
     this.table = this.assignToTable(hands, this.configService.getPlayers());
     this.table.assignPrizeCard();
-    // fire event with table ????
     console.log(`TRACER TODO fire event with table ${this.table.toString()}`);
     this.tableChanged.emit(this.table);
   }
@@ -70,19 +66,17 @@ export class DealerService {
   }
 
   playRound(userCard: Card) {
-    let user: Player = new Players().findUser(this.table.players);
-    let userBid: Bid = new Bid(user, userCard);
-    let bids: Bid[] = this.getBids(userBid);
-    let winningBid: Bid = this.findWinningBid(bids);
-    let roundWinner: Player = winningBid.player;
+    const user: Player = new Players().findUser(this.table.players);
+    const userBid: Bid = new Bid(user, userCard);
+    const bids: Bid[] = this.getBids(userBid);
+    const winningBid: Bid = this.findWinningBid(bids);
+    const roundWinner: Player = winningBid.player;
     this.setStatsForRound(this.table.prizeCard.value, bids, roundWinner);
     // console.log(`TRACER ROUND ${winner.name} WINS prize: ${this.table.prizeCard.value}`);
 
     if (this.table.kitty.isEmpty()) {
-      // TODO: determine game winner
       let gameWinner: Player = new Players().findGameWinner(this.table.players);
       this.statusChanged.emit(`Game winner: ${gameWinner.name}`);
-      // this.setStatsForGame();
     } else {
       this.statusChanged.emit(`Round winner: ${roundWinner.name}! (${this.table.prizeCard.value} points)`);
       this.table.assignPrizeCard();

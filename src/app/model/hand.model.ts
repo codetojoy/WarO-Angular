@@ -1,3 +1,5 @@
+import { Constants } from "../util/constants";
+
 export class Card {
   value: number = 0;
 
@@ -6,7 +8,7 @@ export class Card {
   }
 
   getDisplay(isTransparent?: boolean) {
-    let result = ".";
+    let result = Constants.OBSCURED_CARD_VALUE;
 
     if (isTransparent) {
       result = this.toString();

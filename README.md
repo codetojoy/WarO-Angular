@@ -13,6 +13,8 @@ npm install --save bootstrap@3
 ### TODO
 
 * X canary tests
+* constants 
+* clear player stats on new game
 * config area
 * proper tests
 * CSS treatment
