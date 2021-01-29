@@ -8,14 +8,31 @@ import { GameComponent } from "./game/game.component";
 import { PlayerComponent } from "./player/player.component";
 import { PlayersComponent } from "./players/players.component";
 
+import { AuditService } from "./service/audit.service";
 import { ConfigService } from "./service/config.service";
 import { DealerService } from "./service/dealer.service";
 import { StrategyService } from "./service/strategy.service";
+import { ConfigComponent } from "./config/config.component";
+
+import { Routes, RouterModule } from "@angular/router";
+import { FormsModule } from "@angular/forms";
+
+const appRoutes: Routes = [
+  { path: "", component: GameComponent },
+  { path: "config", component: ConfigComponent },
+];
 
 @NgModule({
-  declarations: [AppComponent, ControlpanelComponent, GameComponent, PlayerComponent, PlayersComponent],
-  imports: [BrowserModule, AppRoutingModule],
-  providers: [ConfigService, DealerService, StrategyService],
+  declarations: [
+    AppComponent,
+    ControlpanelComponent,
+    GameComponent,
+    PlayerComponent,
+    PlayersComponent,
+    ConfigComponent,
+  ],
+  imports: [BrowserModule, AppRoutingModule, RouterModule.forRoot(appRoutes), FormsModule],
+  providers: [AuditService, ConfigService, DealerService, StrategyService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

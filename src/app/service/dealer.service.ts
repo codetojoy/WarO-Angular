@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from "@angular/core";
 
 import { ConfigService } from "./config.service";
+import { AuditService } from "./audit.service";
 
 import { Deck } from "../model/deck.model";
 import { Card, Hand, Kitty } from "../model/hand.model";
@@ -13,11 +14,16 @@ export class DealerService {
   tableChanged: EventEmitter<Table> = new EventEmitter<Table>();
   statusChanged: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private configService: ConfigService) {
-    this.configService.transparencyModeChanged.subscribe((value) => {
+  constructor(private auditService: AuditService, private configService: ConfigService) {
+    this.configService.transparencyModeChanged.subscribe((value: boolean) => {
       this.table.setTransparencyMode(value);
       this.tableChanged.emit(this.table);
     });
+  }
+
+  emitTableChanged(): void {
+    this.auditService.audit(this.table);
+    this.tableChanged.emit(this.table);
   }
 
   newGame() {
@@ -32,8 +38,7 @@ export class DealerService {
 
     this.table = this.assignToTable(hands, this.configService.getPlayers());
     this.table.assignPrizeCard();
-    console.log(`TRACER TODO fire event with table ${this.table.toString()}`);
-    this.tableChanged.emit(this.table);
+    this.emitTableChanged();
   }
 
   assignToTable(hands: Hand[], players: Player[]): Table {
@@ -67,8 +72,9 @@ export class DealerService {
 
   playRound(userCard: Card) {
     const user: Player = new Players().findUser(this.table.players);
-    const userBid: Bid = new Bid(user, userCard);
-    const bids: Bid[] = this.getBids(userBid);
+    // TODO: validate userCard
+    // TODO: remove userCard from hand
+    const bids: Bid[] = this.getBids(user.name, userCard);
     const winningBid: Bid = this.findWinningBid(bids);
     const roundWinner: Player = winningBid.player;
     this.setStatsForRound(this.table.prizeCard.value, bids, roundWinner);
@@ -76,11 +82,13 @@ export class DealerService {
     if (this.table.kitty.isEmpty()) {
       let gameWinner: Player = new Players().findGameWinner(this.table.players);
       this.statusChanged.emit(`Game winner: ${gameWinner.name}`);
+      this.table.endGame();
     } else {
-      this.statusChanged.emit(`Round winner: ${roundWinner.name}! (${this.table.prizeCard.value} points)`);
       this.table.assignPrizeCard();
+      this.statusChanged.emit(`Round winner: ${roundWinner.name}! (${this.table.prizeCard.value} points)`);
     }
-    this.tableChanged.emit(this.table);
+
+    this.emitTableChanged();
   }
 
   setStatsForRound(prizeValue: number, bids: Bid[], winner: Player) {
@@ -103,13 +111,28 @@ export class DealerService {
     }, null);
   }
 
-  getBids(userBid: Bid): Bid[] {
+  getBids(userName: string, userCard: Card): Bid[] {
     let bids: Bid[] = [];
-    bids.push(userBid);
+
     this.table.players.forEach((player) => {
-      let bid: Bid = player.getBid(this.table.getPrizeCard(), this.configService.getMaxCard());
+      const isUser: boolean = player.name === userName;
+      const bid: Bid = this.getBid(player, isUser, userCard);
       bids.push(bid);
+      this.table.discardCardForAudit(bid.card);
     });
+
     return bids;
+  }
+
+  getBid(player: Player, isUser: boolean, userCard: Card): Bid {
+    let bid: Bid = null;
+
+    if (isUser) {
+      bid = player.makeUserBid(userCard);
+    } else {
+      bid = player.getBid(this.table.getPrizeCard(), this.configService.getMaxCard());
+    }
+
+    return bid;
   }
 }

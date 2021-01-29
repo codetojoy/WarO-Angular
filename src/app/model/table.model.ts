@@ -9,6 +9,8 @@ export class Table {
   kitty: Kitty = new Hand();
   players: Player[] = [];
   prizeCard: Card;
+  discardTotal: number = 0;
+  roundNumber: number = 0;
 
   constructor(kitty?: Kitty, players?: Player[]) {
     if (kitty) {
@@ -19,10 +21,19 @@ export class Table {
     }
   }
 
+  endGame(): void {
+    if (!this.kitty.isEmpty()) {
+      window.alert(`INTERNAL ERROR kitty is not empty`);
+    }
+    this.prizeCard = null;
+    this.isInPlay = false;
+  }
+
   assignPrizeCard(): void {
     this.isInPlay = true;
     this.prizeCard = this.kitty.getCards()[0];
     this.kitty.removeCard(this.prizeCard);
+    this.roundNumber++;
   }
 
   getPrizeCard(): Card {
@@ -38,11 +49,13 @@ export class Table {
     return this.transparencyMode;
   }
 
-  /*
-  doesHaveKitty(): boolean {
-    return this.kitty && !this.kitty.isEmpty();
+  getDiscardTotalForAudit(): number {
+    return this.discardTotal;
   }
-  */
+
+  discardCardForAudit(card: Card) {
+    this.discardTotal += card.value;
+  }
 
   getIsInPlay(): boolean {
     return this.isInPlay;
@@ -50,8 +63,10 @@ export class Table {
 
   toString(): string {
     let result: string = "";
+    let prizeCardStr: string = this.prizeCard ? this.prizeCard.toString() : "";
+    result += `round #${this.roundNumber} prizeCard: ${prizeCardStr}\n`;
     result += `kitty: ${this.kitty.toString()}\n`;
-    this.players.forEach((player) => (result += `${this.players.toString()}\n`));
+    this.players.forEach((player) => (result += `${player.toString()}\n`));
     return result;
   }
 }

@@ -56,6 +56,13 @@ export class Player {
     return bid;
   }
 
+  makeUserBid(card: Card): Bid {
+    // TODO: validate card is in hand
+    this.hand.removeCard(card);
+    let bid: Bid = new Bid(this, card);
+    return bid;
+  }
+
   getPlayerStats(): PlayerStats {
     return this.playerStats;
   }
@@ -85,7 +92,7 @@ export class Player {
   }
 
   toString(): string {
-    let result: string = `${this.name} : ${this.hand}\n`;
+    let result: string = `${this.name} : ${this.hand}`;
     return result;
   }
 }

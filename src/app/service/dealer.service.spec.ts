@@ -7,6 +7,7 @@ import { Player, Players, Bid } from "../model/player.model";
 import { ConfigService } from "./config.service";
 import { DealerService } from "./dealer.service";
 import { StrategyService } from "./strategy.service";
+import { AuditService } from "./audit.service";
 
 describe("Dealer Service", () => {
   let dealerService: DealerService;
@@ -14,7 +15,8 @@ describe("Dealer Service", () => {
   beforeEach(() => {
     let strategyService: StrategyService = new StrategyService();
     let configService: ConfigService = new ConfigService(strategyService);
-    dealerService = new DealerService(configService);
+    let auditService: AuditService = new AuditService(configService);
+    dealerService = new DealerService(auditService, configService);
   });
 
   function c(value: number): Card {

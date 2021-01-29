@@ -13,11 +13,17 @@ npm install --save bootstrap@3
 ### TODO
 
 * X canary tests
+* audit round/game: closed system of points
+    - user hand is not being handled properly 
+* error handling
 * constants 
 * clear player stats on new game
 * config area
+    * add routing from course
 * proper tests
 * CSS treatment
+    - esp. test for small devices
 * revisit architecture / code seams
 * revisit loop idioms etc with functional style
 * revisit RxJS
+* remote api strategy 

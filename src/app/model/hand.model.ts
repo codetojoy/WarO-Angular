@@ -31,6 +31,10 @@ export class Hand {
     }
   }
 
+  getSumPoints(): number {
+    return this.cards.reduce((acc, card) => acc + card.value, 0);
+  }
+
   removeCard(card: Card) {
     this.cards = this.cards.filter((c) => c.value !== card.value);
   }

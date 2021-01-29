@@ -32,6 +32,10 @@ export class ConfigService {
     return players;
   }
 
+  setNumCards(value: number): void {
+    this.numCards = value;
+  }
+
   getNumCards(): number {
     return this.numCards;
   }
