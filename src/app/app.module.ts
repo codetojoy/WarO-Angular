@@ -16,6 +16,7 @@ import { ConfigComponent } from "./config/config.component";
 
 import { Routes, RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
+import { PlayerConfigItemComponent } from './config/player-config-item/player-config-item.component';
 
 const appRoutes: Routes = [
   { path: "", component: GameComponent },
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
     PlayerComponent,
     PlayersComponent,
     ConfigComponent,
+    PlayerConfigItemComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, RouterModule.forRoot(appRoutes), FormsModule],
   providers: [AuditService, ConfigService, DealerService, StrategyService],

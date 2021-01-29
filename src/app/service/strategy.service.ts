@@ -1,4 +1,4 @@
-import { NextCard, Strategy } from "../model/strategy.model";
+import { NextCard, Strategy, UserChoice } from "../model/strategy.model";
 import { Constants } from "../util/constants";
 
 export class StrategyService {
@@ -9,9 +9,12 @@ export class StrategyService {
         strategy = new NextCard();
         break;
       }
+      case Constants.STRATEGY_USER: {
+        strategy = new UserChoice();
+        break;
+      }
       default:
-        console.log(`TRACER UNKNOWN strategy: ${name}`);
-        strategy = new NextCard();
+        window.alert(`INTERNAL ERROR unknown strategy: ${name}`);
         break;
     }
     return strategy;

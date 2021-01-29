@@ -17,15 +17,9 @@ export class AuditService {
     }
     table.players.forEach((player) => {
       actualSum += player.hand.getSumPoints();
-      /*
-      player.getCards().forEach((card) => {
-        actualSum += card.value;
-      });
-      */
       actualSum += player.getPlayerStats().points;
     });
     actualSum += table.kitty.getSumPoints();
-    // table.kitty.getCards().forEach((card) => (actualSum += card.value));
 
     if (actualSum != expectedSum) {
       window.alert(`INTERNAL ERROR expected: ${expectedSum} actual ${actualSum}`);

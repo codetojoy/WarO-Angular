@@ -13,8 +13,16 @@ export class ConfigService {
   private numCards: number = 15;
   private maxCard: number = this.numCards;
   private numCardsInHand: number = 0;
+  private players: Player[] = [];
 
-  constructor(private strategyService: StrategyService) {}
+  constructor(private strategyService: StrategyService) {
+    const nextCardStrategy: Strategy = this.strategyService.getStrategy(Constants.STRATEGY_NEXT);
+    const userStrategy: Strategy = this.strategyService.getStrategy(Constants.STRATEGY_USER);
+    this.players.push(new Player("Beethoven", nextCardStrategy));
+    this.players.push(new Player("Chopin", nextCardStrategy));
+    this.players.push(new Player("Mozart", nextCardStrategy));
+    this.players.push(new Player("You", userStrategy, true));
+  }
 
   toggleTransparency(): void {
     this.isTransparentMode = !this.isTransparentMode;
@@ -22,14 +30,8 @@ export class ConfigService {
   }
 
   getPlayers(): Player[] {
-    let players: Player[] = [];
-    let strategy: Strategy = this.strategyService.getStrategy(Constants.STRATEGY_NEXT);
-    players.push(new Player("Beethoven", strategy));
-    players.push(new Player("Chopin", strategy));
-    players.push(new Player("Mozart", strategy));
-    players.push(new Player("You", strategy, true));
-    this.numCardsInHand = this.numCards / (players.length + 1);
-    return players;
+    this.numCardsInHand = this.numCards / (this.players.length + 1);
+    return this.players;
   }
 
   setNumCards(value: number): void {
