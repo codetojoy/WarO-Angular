@@ -1,0 +1,16 @@
+name: test
+
+on: [workflow_dispatch, push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v3 
+
+      - name: install
+        run: npm ci 
+
+      - name: test
+        run: ./test-headless.sh
