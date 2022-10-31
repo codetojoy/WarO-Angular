@@ -12,5 +12,8 @@ jobs:
       - name: install
         run: npm ci 
 
+      - name: ng
+        run: npm install @angular/cli
+
       - name: test
         run: ./test-headless.sh
